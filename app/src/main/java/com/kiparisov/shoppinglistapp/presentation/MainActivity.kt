@@ -2,11 +2,30 @@ package com.kiparisov.shoppinglistapp.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.kiparisov.shoppinglistapp.R
+import android.util.Log
+import androidx.activity.viewModels
+import com.kiparisov.shoppinglistapp.databinding.ActivityMainBinding
+import com.kiparisov.shoppinglistapp.domain.ShopItem
 
 class MainActivity : AppCompatActivity() {
+    private val viewModel: MainViewModel by viewModels()
+    private val binding: ActivityMainBinding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
+
+        viewModel.list.observe(this){
+            Log.d("MainActivityTest", "onCreate: $it")
+        }
+
+        binding.button.setOnClickListener {
+            viewModel.addToList(ShopItem(
+                name = "newItem",
+                count = 2,
+                enabled = true,
+            ))
+        }
     }
 }
