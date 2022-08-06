@@ -12,20 +12,13 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
         viewModel.list.observe(this){
             Log.d("MainActivityTest", "onCreate: $it")
-        }
-
-        binding.button.setOnClickListener {
-            viewModel.addToList(ShopItem(
-                name = "newItem",
-                count = 2,
-                enabled = true,
-            ))
         }
     }
 }
