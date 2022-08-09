@@ -9,7 +9,6 @@ import com.kiparisov.shoppinglistapp.domain.*
 class MainViewModel: ViewModel() {
     private val shopListRepository = ShopListRepositoryImpl
 
-
     private val getShopListUseCase = GetShopListUseCase(shopListRepository)
     private val addShopItemUseCase = AddShopItemUseCase(shopListRepository)
     private val editShopItemUseCase = EditShopItemUseCase(shopListRepository)
