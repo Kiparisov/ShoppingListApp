@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kiparisov.shoppinglistapp.R
 import com.kiparisov.shoppinglistapp.databinding.ActivityMainBinding
 import com.kiparisov.shoppinglistapp.presentation.adapters.ShopListAdapter
 
