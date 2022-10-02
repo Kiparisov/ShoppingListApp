@@ -3,10 +3,10 @@ package com.kiparisov.shoppinglistapp.presentation.adapters
 import androidx.recyclerview.widget.DiffUtil
 import com.kiparisov.shoppinglistapp.domain.ShopItem
 
-class ShopListDiffCallback(
+class ShopListDiffUtilCallBack(
     private val oldList: List<ShopItem>,
     private val newList: List<ShopItem>
-): DiffUtil.Callback() {
+):DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
 
     override fun getNewListSize(): Int = newList.size

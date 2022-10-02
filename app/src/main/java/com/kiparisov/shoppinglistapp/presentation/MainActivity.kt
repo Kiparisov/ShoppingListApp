@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kiparisov.shoppinglistapp.R
 import com.kiparisov.shoppinglistapp.databinding.ActivityMainBinding
 import com.kiparisov.shoppinglistapp.presentation.adapters.ShopListAdapter
 
@@ -28,10 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.list.observe(this){
             Log.d("MainActivityTest", "onCreate: $it")
-            shopListAdapter.shopList = it
+            shopListAdapter.submitList(it)
         }
     }
-
     private fun setupRecyclerView(){
         with(binding.recyclerView){
             adapter = shopListAdapter
@@ -68,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val shopItem = shopListAdapter.shopList[viewHolder.adapterPosition]
+                val shopItem = shopListAdapter.currentList[viewHolder.adapterPosition]
                 viewModel.deleteShopItem(shopItem)
             }
         }
