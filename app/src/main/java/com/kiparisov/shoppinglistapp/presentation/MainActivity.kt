@@ -1,5 +1,6 @@
 package com.kiparisov.shoppinglistapp.presentation
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,10 @@ class MainActivity : AppCompatActivity() {
             Log.d("MainActivityTest", "onCreate: $it")
             shopListAdapter.submitList(it)
         }
+
+        binding.FAB.setOnClickListener {
+            startActivity(Intent(this@MainActivity, SecondActivity::class.java))
+        }
     }
     private fun setupRecyclerView(){
         with(binding.recyclerView){
@@ -47,6 +52,11 @@ class MainActivity : AppCompatActivity() {
         with(shopListAdapter){
             onLongClickListener = {
                 viewModel.changeEnableState(it)
+            }
+            onClickListener = {
+                val intent = Intent(this@MainActivity, SecondActivity::class.java)
+                intent.putExtra("item", it)
+                startActivity(intent)
             }
         }
     }
