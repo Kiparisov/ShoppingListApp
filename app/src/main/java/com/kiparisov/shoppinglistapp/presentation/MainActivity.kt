@@ -32,7 +32,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.FAB.setOnClickListener {
-            startActivity(Intent(this@MainActivity, SecondActivity::class.java))
+            val intent = SecondActivity.newIntentAddItem(this@MainActivity)
+            startActivity(intent)
         }
     }
     private fun setupRecyclerView(){
@@ -53,9 +54,10 @@ class MainActivity : AppCompatActivity() {
             onLongClickListener = {
                 viewModel.changeEnableState(it)
             }
+
             onClickListener = {
-                val intent = Intent(this@MainActivity, SecondActivity::class.java)
-                intent.putExtra("item", it)
+                val intent = SecondActivity.newIntentEditItem(this@MainActivity,
+                    it.id)
                 startActivity(intent)
             }
         }
@@ -63,10 +65,8 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun setupSwipeCallback(){
-        val callback = object : ItemTouchHelper.SimpleCallback(
-            0,
-            ItemTouchHelper.LEFT
-        ){
+        val callback = object : ItemTouchHelper.SimpleCallback(0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,

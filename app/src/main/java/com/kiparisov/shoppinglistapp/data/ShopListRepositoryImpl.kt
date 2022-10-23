@@ -34,7 +34,7 @@ object ShopListRepositoryImpl: ShopListRepository {
             enabled = true
         ))*/
 
-        for (i in 0..10000){
+        for (i in 0..100){
             addShopItem(ShopItem(
                 name = "Name $i",
                 count = i,
