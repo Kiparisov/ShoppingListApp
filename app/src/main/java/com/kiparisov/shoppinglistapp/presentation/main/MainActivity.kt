@@ -1,14 +1,18 @@
-package com.kiparisov.shoppinglistapp.presentation
+package com.kiparisov.shoppinglistapp.presentation.main
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kiparisov.shoppinglistapp.R
 import com.kiparisov.shoppinglistapp.databinding.ActivityMainBinding
+import com.kiparisov.shoppinglistapp.presentation.second.SecondActivity
 import com.kiparisov.shoppinglistapp.presentation.adapters.ShopListAdapter
+import com.kiparisov.shoppinglistapp.presentation.second.SecondFragment
 
 class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
@@ -20,9 +24,27 @@ class MainActivity : AppCompatActivity() {
         ShopListAdapter()
     }
 
+
+    private fun isLandScapeOrientation(): Boolean{
+        binding.fragmentContainerView?.let {
+            return true
+        }
+        return false
+    }
+
+    private fun launchFragment(fragment: Fragment){
+        supportFragmentManager.popBackStack()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container_view, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        //setOrientation()
 
         setupRecyclerView()
 
@@ -32,8 +54,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.FAB.setOnClickListener {
-            val intent = SecondActivity.newIntentAddItem(this@MainActivity)
-            startActivity(intent)
+            if(isLandScapeOrientation()){
+                val fragment = SecondFragment.newFragmentAddItem()
+                launchFragment(fragment)
+            }else{
+                val intent = SecondActivity.newIntentAddItem(this@MainActivity)
+                startActivity(intent)
+            }
+
         }
     }
     private fun setupRecyclerView(){
@@ -56,9 +84,20 @@ class MainActivity : AppCompatActivity() {
             }
 
             onClickListener = {
-                val intent = SecondActivity.newIntentEditItem(this@MainActivity,
-                    it.id)
-                startActivity(intent)
+                if (isLandScapeOrientation()){
+
+                    val fragment = SecondFragment.newFragmentEditItem(
+                                                shopItemId = it.id
+                                            )
+                    launchFragment(fragment)
+                }else{
+                    val intent = SecondActivity.newIntentEditItem(
+                        this@MainActivity,
+                        it.id
+                    )
+                    startActivity(intent)
+                }
+
             }
         }
     }

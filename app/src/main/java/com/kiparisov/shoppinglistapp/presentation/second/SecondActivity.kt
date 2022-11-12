@@ -1,4 +1,4 @@
-package com.kiparisov.shoppinglistapp.presentation
+package com.kiparisov.shoppinglistapp.presentation.second
 
 import android.content.Context
 import android.content.Intent
@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
+import com.kiparisov.shoppinglistapp.R
 import com.kiparisov.shoppinglistapp.databinding.ActivitySecondBinding
 import com.kiparisov.shoppinglistapp.domain.ShopItem
 
@@ -15,10 +18,10 @@ class SecondActivity : AppCompatActivity() {
     private val viewModel: SecondViewModel by viewModels()
     private var screenMode: String = UNDEFINED_MODE
     private var shopItemId: Int = ShopItem.UNDEFINED_ID
+
     private val binding: ActivitySecondBinding by lazy{
         ActivitySecondBinding.inflate(layoutInflater)
     }
-
 
     private fun parseIntent(intent: Intent){
         if (!intent.hasExtra(EXTRA_SCREEN_MODE)){
@@ -66,14 +69,31 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         parseIntent(intent)
-        setLaunchMode()
-        addTextWatchers()
-        observeViewModel()
+        if (savedInstanceState == null) {startFragmentInRightMode()}
+
+        /*addTextWatchers()
+        observeViewModel()*/
     }
 
-    private fun observeViewModel(){
+    private fun startFragmentInRightMode(){
+        val fragment: Fragment = when(screenMode){
+            MODE_EDIT -> SecondFragment
+                .newFragmentEditItem(shopItemId = shopItemId)
+            MODE_ADD -> SecondFragment
+                .newFragmentAddItem()
+            else -> throw RuntimeException("Param screen mode is absent")
+        }
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container_view, fragment)
+            .commit()
+    }
+
+
+
+    /*private fun observeViewModel(){
         viewModel.errorName.observe(this){
             val message = if (it){
                 "Некорректное имя"
@@ -97,12 +117,7 @@ class SecondActivity : AppCompatActivity() {
         }
     }
 
-    private fun setLaunchMode(){
-        when(screenMode){
-            MODE_EDIT -> launchEditMode()
-            MODE_ADD -> launchAddMode()
-        }
-    }
+
     private fun addTextWatchers(){
         binding.name.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -165,8 +180,6 @@ class SecondActivity : AppCompatActivity() {
         viewModel.editShopItem(name, count)
     }
 
-
-
     private fun setTextInEditText(shopItem: ShopItem){
         binding.name.setText(shopItem.name)
         binding.count.setText(shopItem.count.toString())
@@ -177,5 +190,13 @@ class SecondActivity : AppCompatActivity() {
             android.R.id.home -> finish()
         }
         return super.onOptionsItemSelected(item)
+    }*/
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home -> finish()
+        }
+        return super.onOptionsItemSelected(item)
     }
+
 }

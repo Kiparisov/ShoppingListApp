@@ -1,4 +1,4 @@
-package com.kiparisov.shoppinglistapp.presentation
+package com.kiparisov.shoppinglistapp.presentation.second
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
